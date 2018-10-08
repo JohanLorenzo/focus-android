@@ -192,13 +192,6 @@ tasks:
                 --track nightly \
                 --output /opt/focus-android/app/build/outputs/apk \
                 --apk focusX86/nightly/app-focus-x86-nightly-unsigned.apk
-        extra:
-          $if: 'tasks_for == "cron"'
-          then:
-            cron: {$json: {$eval: 'cron'}}
-            tasks_for: ${tasks_for}
-          else:
-            tasks_for: ${tasks_for}
         artifacts:
           public/task-graph.json:
             type: file
@@ -212,6 +205,13 @@ tasks:
             type: file
             path: /opt/focus-android/parameters.yml
             expires: {$fromNow: '1 week'}
+      extra:
+        $if: 'tasks_for == "cron"'
+        then:
+          cron: {$json: {$eval: 'cron'}}
+          tasks_for: ${tasks_for}
+        else:
+          tasks_for: ${tasks_for}
       metadata:
         name:
           $if: 'tasks_for == "github-release"'
