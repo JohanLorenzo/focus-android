@@ -74,7 +74,9 @@ if __name__ == "__main__":
     branch, head_rev = calculate_branch_and_head_rev(ROOT)
 
     params = {
-        'repository_url': 'https://github.com/mozilla-mobile/focus-android',
+        # TODO put back this value
+        # 'repository_url': 'https://github.com/mozilla-mobile/focus-android/raw/{}/.taskcluster.yml'.format(head_rev),
+        'repository_url': 'https://github.com/JohanLorenzo/focus-android/raw/{}/.taskcluster.yml'.format(head_rev),
         'head_rev': head_rev,
         'branch': branch,
         'cron_task_id': os.environ.get('CRON_TASK_ID', '<cron_task_id>')
