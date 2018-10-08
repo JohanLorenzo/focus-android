@@ -31,13 +31,14 @@ def generate_build_task(apks, tag):
         artifact = {
             "type": 'file',
             "path": apk,
-            "expires": taskcluster.stringDate(taskcluster.fromNow('1 year'))
+            "expires": taskcluster.stringDate(taskcluster.fromNow('1 week'))
         }
         artifacts["public/%s" % os.path.basename(apk)] = artifact
 
     checkout = "git fetch origin && git reset --hard origin/master" if tag is None else "git fetch origin && git checkout %s" % (tag)
 
-    assemble_task = 'assembleNightly'
+    # assemble_task = 'assembleNightly'
+    assemble_task = 'assembleFocusX86Nightly'
 
     if tag:
         # Non-tagged (nightly) builds should contain all languages
@@ -49,16 +50,16 @@ def generate_build_task(apks, tag):
         name="(Focus for Android) Build task",
         description="Build Focus/Klar from source code.",
         command=(checkout +
-                 ' && python tools/taskcluster/get-adjust-token.py'
-                 ' && python tools/taskcluster/get-sentry-token.py'
+                 # ' && python tools/taskcluster/get-adjust-token.py'
+                 # ' && python tools/taskcluster/get-sentry-token.py'
                  ' && ./gradlew --no-daemon clean test ' + assemble_task),
         features = {
             "chainOfTrust": True
         },
         artifacts = artifacts,
-        worker_type='gecko-focus',
+        worker_type='github-worker',
         scopes=[
-            "secrets:get:project/focus/tokens"
+            # "secrets:get:project/focus/tokens"
         ])
 
 def generate_signing_task(build_task_id, apks, tag):
@@ -68,18 +69,18 @@ def generate_signing_task(build_task_id, apks, tag):
 
     routes = []
     scopes = [
-        "project:mobile:focus:releng:signing:cert:release-signing",
-        "project:mobile:focus:releng:signing:format:focus-jar"
+        # "project:mobile:focus:releng:signing:cert:release-signing",
+        # "project:mobile:focus:releng:signing:format:focus-jar"
     ]
 
-    if tag:
-        index = "index.project.mobile.focus.release.latest"
-        routes.append(index)
-        scopes.append("queue:route:" + index)
-    else:
-        index = "index.project.mobile.focus.nightly.latest"
-        routes.append(index)
-        scopes.append("queue:route:" + index)
+    # if tag:
+        # index = "index.project.mobile.focus.release.latest"
+        # routes.append(index)
+        # scopes.append("queue:route:" + index)
+    # else:
+        # index = "index.project.mobile.focus.nightly.latest"
+        # routes.append(index)
+        # scopes.append("queue:route:" + index)
 
     return taskcluster.slugId(), BUILDER.build_signing_task(
         build_task_id,
@@ -136,11 +137,11 @@ def release(apks, track, commit, tag):
     task_graph[sign_task_id] = {}
     task_graph[sign_task_id]["task"] = queue.task(sign_task_id)
 
-    push_task_id, push_task = generate_push_task(sign_task_id, apks, track, commit)
-    lib.tasks.schedule_task(queue, push_task_id, push_task)
-
-    task_graph[push_task_id] = {}
-    task_graph[push_task_id]["task"] = queue.task(push_task_id)
+    # push_task_id, push_task = generate_push_task(sign_task_id, apks, track, commit)
+    # lib.tasks.schedule_task(queue, push_task_id, push_task)
+    #
+    # task_graph[push_task_id] = {}
+    # task_graph[push_task_id]["task"] = queue.task(push_task_id)
 
     print json.dumps(task_graph, indent=4, separators=(',', ': '))
 
