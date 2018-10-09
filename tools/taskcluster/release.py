@@ -19,7 +19,7 @@ HEAD_SHA = os.environ.get('GITHUB_HEAD_SHA')
 
 BUILDER = lib.tasks.TaskBuilder(
     task_id=TASK_ID,
-    repo_url=os.environ.get('GITHUB_HEAD_REPO_URL'),
+    repo_url=os.environ.get('MOBILE_HEAD_REPOSITORY'),
     branch=os.environ.get('GITHUB_HEAD_BRANCH'),
     commit=HEAD_SHA,
     owner="skaspari@mozilla.com",

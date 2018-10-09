@@ -17,7 +17,7 @@ from lib.tasks import schedule_task
 
 
 TASK_ID = os.environ.get('TASK_ID')
-REPO_URL = os.environ.get('GITHUB_HEAD_REPO_URL')
+REPO_URL = os.environ.get('MOBILE_HEAD_REPOSITORY')
 BRANCH = os.environ.get('GITHUB_HEAD_BRANCH')
 COMMIT = os.environ.get('GITHUB_HEAD_SHA')
 OWNER = "skaspari@mozilla.com"
