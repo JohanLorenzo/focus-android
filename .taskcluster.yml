@@ -118,9 +118,25 @@ tasks:
       deadline: {$fromNow: '2 hours'}
       # expires: {$fromNow: '1 year'}
       expires: {$fromNow: '1 week'}
+      schedulerId:
+        $if: 'tasks_for == "cron"'
+        then:
+          '-'
+        $if: 'tasks_for == "github-release"'
+        then:
+          taskcluster-github
       provisionerId: aws-provisioner-v1
       # workerType: gecko-focus   # This workerType has ChainOfTrust enabled
       workerType: github-worker
+      requires: all-completed
+      priority:
+        $if: 'tasks_for == "cron"'
+        then:
+          medium
+        $if: 'tasks_for == "github-release"'
+        then:
+          highest
+      retries: 5
       scopes:
         $if: 'tasks_for == "cron"'
         then:
