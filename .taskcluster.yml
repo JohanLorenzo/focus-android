@@ -80,7 +80,7 @@ tasks:
             TASK_ID: {$eval: as_slugid("decision_task")}
             MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
             GITHUB_HEAD_BRANCH: ${event.ref}
-            GITHUB_HEAD_SHA: ${event.after}
+            MOBILE_HEAD_REV: ${event.after}
           command:
             - /bin/bash
             - --login
@@ -166,7 +166,7 @@ tasks:
           TASK_ID: {$eval: as_slugid("decision_task")}
           MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
           GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
-          GITHUB_HEAD_SHA: ${event.release.tag_name}
+          MOBILE_HEAD_REV: ${event.release.tag_name}
         command:
           - /bin/bash
           - --login

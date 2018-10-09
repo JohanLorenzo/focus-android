@@ -19,7 +19,7 @@ from lib.tasks import schedule_task
 TASK_ID = os.environ.get('TASK_ID')
 REPO_URL = os.environ.get('MOBILE_HEAD_REPOSITORY')
 BRANCH = os.environ.get('GITHUB_HEAD_BRANCH')
-COMMIT = os.environ.get('GITHUB_HEAD_SHA')
+COMMIT = os.environ.get('MOBILE_HEAD_REV')
 OWNER = "skaspari@mozilla.com"
 SOURCE = "https://github.com/mozilla-mobile/focus-android/tree/master/tools/taskcluster"
 

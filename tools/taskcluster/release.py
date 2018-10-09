@@ -15,17 +15,17 @@ import taskcluster
 import lib.tasks
 
 TASK_ID = os.environ.get('TASK_ID')
-HEAD_SHA = os.environ.get('GITHUB_HEAD_SHA')
+HEAD_REV = os.environ.get('MOBILE_HEAD_REV')
 
 BUILDER = lib.tasks.TaskBuilder(
     task_id=TASK_ID,
     repo_url=os.environ.get('MOBILE_HEAD_REPOSITORY'),
     branch=os.environ.get('GITHUB_HEAD_BRANCH'),
-    commit=HEAD_SHA,
+    commit=HEAD_REV,
     owner="skaspari@mozilla.com",
     # TODO put back this value
-    # source='https://github.com/mozilla-mobile/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_SHA)
-    source='https://github.com/JohanLorenzo/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_SHA)
+    # source='https://github.com/mozilla-mobile/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_REV)
+    source='https://github.com/JohanLorenzo/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_REV)
 )
 
 def generate_build_task(apks, tag):
