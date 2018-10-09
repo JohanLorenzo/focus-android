@@ -219,7 +219,13 @@ tasks:
             (Focus for Android) Decision task (${event.release.tag_name})
           $if: 'tasks_for == "cron"'
           then:
-            (Focus for Android) Focus/Klar Nightly Builds (Public) (triggered by ${cron.task_id})
-        description: Scheduling tasks for releasing Focus/Klar
+            (Focus for Android) Focus/Klar Nightly Builds (Public)
+        description:
+          $if: 'tasks_for == "github-release"'
+          then:
+            Scheduling tasks for releasing Focus/Klar
+          $if: 'tasks_for == "cron"'
+          then:
+            Decision task scheduled by cron task [${cron.task_id}](https://tools.taskcluster.net/tasks/${cron.task_id})
         owner: ${event.sender.login}@users.noreply.github.com
         source: ${event.repository.clone_url}
