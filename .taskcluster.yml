@@ -116,24 +116,29 @@ tasks:
       taskGroupId: {$eval: as_slugid("decision_task")}
       created: {$fromNow: ''}
       deadline: {$fromNow: '2 hours'}
-      expires: {$fromNow: '1 year'}
+      # expires: {$fromNow: '1 year'}   # TODO Put back 1 year
+      expires: {$fromNow: '1 week'}
       schedulerId: taskcluster-github   # Must be explicit because of Chain of Trust
       provisionerId: aws-provisioner-v1
-      workerType: gecko-focus   # This workerType has ChainOfTrust enabled
+      # workerType: gecko-focus   # This workerType has ChainOfTrust enabled
+      workerType: github-worker   # TODO Put back gecko-focus
       requires: all-completed   # Must be explicit because of Chain of Trust
       priority: highest
       retries: 5
       scopes:
         - queue:scheduler-id:taskcluster-github
-        - queue:create-task:aws-provisioner-v1/github-worker
-        - queue:create-task:highest:aws-provisioner-v1/gecko-focus
-        - queue:create-task:highest:scriptworker-prov-v1/mobile-signing-v1
-        - queue:create-task:highest:scriptworker-prov-v1/mobile-pushapk-v1
-        - project:mobile:focus:releng:signing:cert:release-signing
-        - project:mobile:focus:releng:signing:format:focus-jar
-        - project:mobile:focus:releng:googleplay:product:focus
-        - secrets:get:project/focus/tokens
-        - queue:route:index.project.mobile.focus.release.latest
+        - queue:create-task:medium:aws-provisioner-v1/github-worker
+        - queue:create-task:medium:null-provisioner/null-worker
+        # - queue:scheduler-id:taskcluster-github
+        # - queue:create-task:aws-provisioner-v1/github-worker
+        # - queue:create-task:highest:aws-provisioner-v1/gecko-focus
+        # - queue:create-task:highest:scriptworker-prov-v1/mobile-signing-v1
+        # - queue:create-task:highest:scriptworker-prov-v1/mobile-pushapk-v1
+        # - project:mobile:focus:releng:signing:cert:release-signing
+        # - project:mobile:focus:releng:signing:format:focus-jar
+        # - project:mobile:focus:releng:googleplay:product:focus
+        # - secrets:get:project/focus/tokens
+        # - queue:route:index.project.mobile.focus.release.latest
       payload:
         maxRunTime: 600   # Decision should remain fast enough to schedule a handful of tasks
         image: mozillamobile/focus-android:1.0
@@ -149,32 +154,42 @@ tasks:
           - /bin/bash
           - --login
           - -cx
+          # - >-
+          #   git fetch origin --tags
+          #   && git config advice.detachedHead false
+          #   && git checkout ${event.release.tag_name}
+          #   && python tools/taskcluster/release.py \
+          #     --tag ${event.release.tag_name} \
+          #     --track alpha \
+          #     --commit \
+          #     --output /opt/focus-android/app/build/outputs/apk \
+          #     --apk focusX86/release/app-focus-x86-release-unsigned.apk \
+          #     --apk klarX86/release/app-klar-x86-release-unsigned.apk \
+          #     --apk focusArm/release/app-focus-arm-release-unsigned.apk \
+          #     --apk klarArm/release/app-klar-arm-release-unsigned.apk
           - >-
-            git fetch origin --tags
+            git remote add jlorenzo https://github.com/JohanLorenzo/focus-android.git
+            && git fetch jlorenzo --tags
             && git config advice.detachedHead false
             && git checkout ${event.release.tag_name}
             && python tools/taskcluster/release.py \
               --tag ${event.release.tag_name} \
               --track alpha \
-              --commit \
               --output /opt/focus-android/app/build/outputs/apk \
-              --apk focusX86/release/app-focus-x86-release-unsigned.apk \
-              --apk klarX86/release/app-klar-x86-release-unsigned.apk \
-              --apk focusArm/release/app-focus-arm-release-unsigned.apk \
-              --apk klarArm/release/app-klar-arm-release-unsigned.apk
+              --apk focusX86/nightly/app-focus-x86-nightly-unsigned.apk
         artifacts:
           public/task-graph.json:
             type: file
             path: /opt/focus-android/task-graph.json
-            expires: {$fromNow: '1 year'}
+            expires: {$fromNow: '1 week'}
           public/actions.json:
             type: file
             path: /opt/focus-android/actions.json
-            expires: {$fromNow: '1 year'}
+            expires: {$fromNow: '1 week'}
           public/parameters.yml:
             type: file
             path: /opt/focus-android/parameters.yml
-            expires: {$fromNow: '1 year'}
+            expires: {$fromNow: '1 week'}
       extra:
           tasks_for: ${tasks_for}
       metadata:
