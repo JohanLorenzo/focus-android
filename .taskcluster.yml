@@ -126,7 +126,7 @@ tasks:
       priority: highest
       retries: 5
       scopes:
-        - queue:scheduler-id:focus-release-sched
+        - queue:scheduler-id:taskcluster-github
         - queue:create-task:medium:aws-provisioner-v1/github-worker
         - queue:create-task:medium:null-provisioner/null-worker
         # - queue:scheduler-id:taskcluster-github
@@ -147,7 +147,7 @@ tasks:
           chainOfTrust: true
         env:
           TASK_ID: {$eval: as_slugid("decision_task")}
-          SCHEDULER_ID: focus-release-sched
+          SCHEDULER_ID: taskcluster-github
           MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
           GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
           MOBILE_HEAD_REV: ${event.release.tag_name}
