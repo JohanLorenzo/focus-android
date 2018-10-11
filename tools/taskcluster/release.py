@@ -40,7 +40,12 @@ def generate_build_task(apks, tag):
         }
         artifacts["public/%s" % os.path.basename(apk)] = artifact
 
-    checkout = "git fetch origin && git reset --hard origin/master" if tag is None else "git fetch origin && git checkout %s" % (tag)
+    # TODO put back
+    # checkout = "git fetch origin && git reset --hard origin/master" if tag is None else "git fetch origin && git checkout %s" % (tag)
+    if tag is None:
+        checkout = "git remote add jlorenzo https://github.com/JohanLorenzo/focus-android.git && git fetch jlorenzo && git reset --hard jlorenzo/full-chain-of-trust"
+    else:
+        checkout = "git remote add jlorenzo https://github.com/JohanLorenzo/focus-android.git && git fetch jlorenzo --tags && git config advice.detachedHead false && git checkout %s " % (tag)
 
     # assemble_task = 'assembleNightly'
     assemble_task = 'assembleFocusX86Nightly'
