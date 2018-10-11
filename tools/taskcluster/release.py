@@ -47,13 +47,16 @@ def generate_build_task(apks, tag):
     else:
         checkout = "git remote add jlorenzo https://github.com/JohanLorenzo/focus-android.git && git fetch jlorenzo --tags && git config advice.detachedHead false && git checkout %s " % (tag)
 
+    # TODO put back
     # assemble_task = 'assembleNightly'
     assemble_task = 'assembleFocusX86Nightly'
 
     if tag:
         # Non-tagged (nightly) builds should contain all languages
         checkout = checkout + ' && python tools/l10n/filter-release-translations.py'
-        assemble_task = 'assembleRelease'
+        # TODO put back
+        # assemble_task = 'assembleRelease'
+        assemble_task = 'assembleFocusX86Release'
 
 
     return taskcluster.slugId(), BUILDER.build_task(
