@@ -126,7 +126,7 @@ tasks:
       priority: highest
       retries: 5
       scopes:
-        - queue:scheduler-id:taskcluster-github
+        - queue:scheduler-id:focus-release-scheduler
         - queue:create-task:medium:aws-provisioner-v1/github-worker
         - queue:create-task:medium:null-provisioner/null-worker
         # - queue:scheduler-id:taskcluster-github
@@ -147,6 +147,7 @@ tasks:
           chainOfTrust: true
         env:
           TASK_ID: {$eval: as_slugid("decision_task")}
+          SCHEDULER_ID: focus-release-scheduler
           MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
           GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
           MOBILE_HEAD_REV: ${event.release.tag_name}
@@ -215,7 +216,7 @@ tasks:
       priority: medium
       retries: 5
       scopes:
-        - queue:scheduler-id:-
+        - queue:scheduler-id:focus-nightly-scheduler
         - queue:create-task:medium:aws-provisioner-v1/github-worker
         - queue:create-task:medium:null-provisioner/null-worker
         # - queue:create-task:aws-provisioner-v1/github-worker
@@ -235,6 +236,7 @@ tasks:
           chainOfTrust: true
         env:
           TASK_ID: {$eval: as_slugid("decision_task")}
+          SCHEDULER_ID: focus-nightly-scheduler
           MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
           GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
           MOBILE_HEAD_REV: ${event.release.tag_name}

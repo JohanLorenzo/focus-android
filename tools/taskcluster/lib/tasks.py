@@ -7,6 +7,7 @@ import json
 import os
 import taskcluster
 
+
 class TaskBuilder(object):
     def __init__(self, task_id, repo_url, branch, commit, owner, source):
         self.task_id = task_id
@@ -15,6 +16,7 @@ class TaskBuilder(object):
         self.commit = commit
         self.owner = owner
         self.source = source
+        self.scheduler_id = schedulerId
 
     def build_task(self, name, description, command, dependencies = [], artifacts = {}, scopes = [], routes = [], features = {}, worker_type = 'github-worker'):
         created = datetime.datetime.now()
@@ -29,6 +31,7 @@ class TaskBuilder(object):
         return {
             "workerType": worker_type,
             "taskGroupId": self.task_id,
+            "schedulerId": self.scheduler_id,
             "expires": taskcluster.stringDate(expires),
             "retries": 5,
             "created": taskcluster.stringDate(created),
@@ -70,6 +73,7 @@ class TaskBuilder(object):
         return {
             "workerType": 'null-worker',
             "taskGroupId": self.task_id,
+            "schedulerId": self.scheduler_id,
             "expires": taskcluster.stringDate(expires),
             "retries": 5,
             "created": taskcluster.stringDate(created),
@@ -110,6 +114,7 @@ class TaskBuilder(object):
         return {
             "workerType": 'mobile-pushapk-v1',
             "taskGroupId": self.task_id,
+            "schedulerId": self.scheduler_id,
             "expires": taskcluster.stringDate(expires),
             "retries": 5,
             "created": taskcluster.stringDate(created),
