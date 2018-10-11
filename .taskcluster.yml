@@ -126,7 +126,7 @@ tasks:
       priority: highest
       retries: 5
       scopes:
-        - queue:scheduler-id:focus-release-scheduler
+        - queue:scheduler-id:focus-release-sched
         - queue:create-task:medium:aws-provisioner-v1/github-worker
         - queue:create-task:medium:null-provisioner/null-worker
         # - queue:scheduler-id:taskcluster-github
@@ -147,7 +147,7 @@ tasks:
           chainOfTrust: true
         env:
           TASK_ID: {$eval: as_slugid("decision_task")}
-          SCHEDULER_ID: focus-release-scheduler
+          SCHEDULER_ID: focus-release-sched
           MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
           GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
           MOBILE_HEAD_REV: ${event.release.tag_name}
@@ -208,7 +208,7 @@ tasks:
       deadline: {$fromNow: '2 hours'}   # TODO Put back 1 year
       # expires: {$fromNow: '1 year'}
       expires: {$fromNow: '1 week'}
-      schedulerId: 'focus-nightly-hook-scheduler'    # Must be explicit because of Chain of Trust
+      schedulerId: focus-nightly-sched    # Must be explicit because of Chain of Trust
       provisionerId: aws-provisioner-v1
       # workerType: gecko-focus   # This workerType has ChainOfTrust enabled
       workerType: github-worker   # TODO Put back gecko-focus
@@ -216,7 +216,7 @@ tasks:
       priority: medium
       retries: 5
       scopes:
-        - queue:scheduler-id:focus-nightly-hook-scheduler
+        - queue:scheduler-id:focus-nightly-sched
         - queue:create-task:medium:aws-provisioner-v1/github-worker
         - queue:create-task:medium:null-provisioner/null-worker
         # - queue:create-task:aws-provisioner-v1/github-worker
@@ -236,7 +236,7 @@ tasks:
           chainOfTrust: true
         env:
           TASK_ID: {$eval: as_slugid("decision_task")}
-          SCHEDULER_ID: focus-nightly-hook-scheduler
+          SCHEDULER_ID: focus-nightly-sched
           MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
           GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
           MOBILE_HEAD_REV: ${event.release.tag_name}
