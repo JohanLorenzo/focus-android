@@ -15,6 +15,7 @@ import taskcluster
 import lib.tasks
 
 TASK_ID = os.environ.get('TASK_ID')
+SCHEDULER_ID = os.environ.get('SCHEDULER_ID')
 HEAD_REV = os.environ.get('MOBILE_HEAD_REV')
 
 BUILDER = lib.tasks.TaskBuilder(
@@ -25,7 +26,8 @@ BUILDER = lib.tasks.TaskBuilder(
     owner="skaspari@mozilla.com",
     # TODO put back this value
     # source='https://github.com/mozilla-mobile/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_REV)
-    source='https://github.com/JohanLorenzo/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_REV)
+    source='https://github.com/JohanLorenzo/focus-android/raw/{}/.taskcluster.yml'.format(HEAD_REV),
+    scheduler_id=SCHEDULER_ID,
 )
 
 def generate_build_task(apks, tag):
