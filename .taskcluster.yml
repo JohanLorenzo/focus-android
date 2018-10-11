@@ -177,7 +177,7 @@ tasks:
               --tag ${event.release.tag_name} \
               --track alpha \
               --output /opt/focus-android/app/build/outputs/apk \
-              --apk focusX86/nightly/app-focus-x86-nightly-unsigned.apk
+              --apk focusX86/nightly/app-focus-x86-release-unsigned.apk
         artifacts:
           public/task-graph.json:
             type: file
