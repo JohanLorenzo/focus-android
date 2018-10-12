@@ -157,6 +157,7 @@ tasks:
             MOBILE_HEAD_REPOSITORY: ${repository}
             MOBILE_HEAD_BRANCH: ${event.release.target_commitish}
             MOBILE_HEAD_REV: ${event.release.tag_name}
+            MOBILE_TRIGGERED_BY: ${event.sender.login}
           command:
             - /bin/bash
             - --login
@@ -252,6 +253,7 @@ tasks:
             MOBILE_HEAD_REPOSITORY: ${repository}
             MOBILE_HEAD_BRANCH: ${event.release.target_commitish}
             MOBILE_HEAD_REV: ${event.release.tag_name}
+            MOBILE_TRIGGERED_BY: ${event.sender.login}
           command:
             - /bin/bash
             - --login
