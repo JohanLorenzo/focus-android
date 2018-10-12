@@ -79,7 +79,7 @@ tasks:
           env:
             TASK_ID: {$eval: as_slugid("decision_task")}
             MOBILE_HEAD_REPOSITORY: ${event.repository.clone_url}
-            GITHUB_HEAD_BRANCH: ${event.ref}
+            MOBILE_HEAD_BRANCH: ${event.ref}
             MOBILE_HEAD_REV: ${event.after}
           command:
             - /bin/bash
@@ -155,7 +155,7 @@ tasks:
             TASK_ID: ${decision_task_id}
             SCHEDULER_ID: ${scheduler_id}
             MOBILE_HEAD_REPOSITORY: ${repository}
-            GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
+            MOBILE_HEAD_BRANCH: ${event.release.target_commitish}
             MOBILE_HEAD_REV: ${event.release.tag_name}
           command:
             - /bin/bash
@@ -250,7 +250,7 @@ tasks:
             TASK_ID: ${decision_task_id}
             SCHEDULER_ID: ${scheduler_id}
             MOBILE_HEAD_REPOSITORY: ${repository}
-            GITHUB_HEAD_BRANCH: ${event.release.target_commitish}
+            MOBILE_HEAD_BRANCH: ${event.release.target_commitish}
             MOBILE_HEAD_REV: ${event.release.tag_name}
           command:
             - /bin/bash
