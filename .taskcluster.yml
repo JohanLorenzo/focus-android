@@ -197,7 +197,9 @@ tasks:
         name: (Focus for Android) Decision task (${event.release.tag_name})
         description: Scheduling tasks for releasing Focus/Klar
         owner: ${event.sender.login}@users.noreply.github.com
-        source: ${event.repository.clone_url}
+        # TODO put back
+        # source: https://github.com/mozilla-releng/focus-android/raw/${event.release.tag_name}/.taskcluster.yml
+        source: https://github.com/JohanLorenzo/focus-android/raw/${event.release.tag_name}/.taskcluster.yml
 # Nighly builds
   - $if: 'tasks_for == "cron"'
     then:
@@ -284,4 +286,6 @@ tasks:
         name: (Focus for Android) Focus/Klar Nightly Builds (Public)
         description: Decision task scheduled by cron task [${cron.task_id}](https://tools.taskcluster.net/tasks/${cron.task_id})
         owner: ${event.sender.login}@users.noreply.github.com
-        source: ${event.repository.clone_url}
+        # TODO put back
+        # source: https://github.com/mozilla-releng/focus-android/raw/${event.release.tag_name}/.taskcluster.yml
+        source: https://github.com/JohanLorenzo/focus-android/raw/${event.release.tag_name}/.taskcluster.yml
