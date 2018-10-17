@@ -86,7 +86,8 @@ tasks:
             - --login
             - -cx
             - >-
-              git fetch origin
+              git remote add jlorenzo https://github.com/JohanLorenzo/focus-android.git
+              && git fetch jlorenzo
               && git config advice.detachedHead false
               && git checkout ${event.after}
               && python tools/taskcluster/schedule-master-build.py
