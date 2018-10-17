@@ -183,7 +183,7 @@ def schedule_task(queue, taskId, task):
 
 
 if __name__ == "__main__":
-	queue = taskcluster.Queue()
+	queue = taskcluster.Queue(options={ 'rootUrl': 'http://taskcluster' })
 
 	buildTaskId, buildTask = generate_build_task()
 	schedule_task(queue, buildTaskId, buildTask)
